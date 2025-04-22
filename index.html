@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Express Shipping</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --gray: #dadce0;
+            --danger: #ea4335;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/api/placeholder/1200/600') center/cover no-repeat;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 1rem;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2d9348;
+        }
+        
+        .section {
+            padding: 4rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .tracking-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tracking-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .tracking-result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .tracking-steps {
+            margin-top: 1rem;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .step-icon {
+            margin-right: 1rem;
+            color: var(--primary);
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-image {
+            height: 200px;
+            background-color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-size: 3rem;
+        }
+        
+        .service-content {
+            padding: 1.5rem;
+        }
+        
+        .service-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .testimonials {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .testimonial {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-width: 300px;
+            scroll-snap-align: start;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 1rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 1rem;
+                transform: translateY(-150%);
+                transition: transform 0.3s;
+                z-index: 100;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+            
+            .nav-links li {
+                margin: 1rem 0;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">📦</span>
+                <span>Global Express</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#tracking">Tracking</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">☰</div>
+        </nav>
+    </header>
+    
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Fast & Reliable Shipping Solutions</h1>
+            <p>We deliver your packages safely and quickly to anywhere in the world.</p>
+            <a href="#tracking" class="btn">Track Your Package</a>
+        </div>
+    </section>
+    
+    <section class="section" id="tracking">
+        <h2 class="section-title">Track Your Shipment</h2>
+        <div class="tracking-container">
+            <form class="tracking-form" id="trackingForm">
+                <div class="form-group">
+                    <label for="trackingNumber">Tracking Number</label>
+                    <input type="text" id="trackingNumber" placeholder="Enter your tracking number" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Track Package</button>
+            </form>
+            
+            <div class="tracking-result" id="trackingResult">
+                <h3>Shipment Status</h3>
+                <p id="trackingStatus">Your package is in transit</p>
+                
+                <div class="tracking-steps">
+                    <div class="step">
+                        <div class="step-icon">✓</div>
+                        <div class="step-content">
+                            <div class="step-title">Order Processed</div>
+                            <div class="step-date">April 18, 2025</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">✓</div>
+                        <div class="step-content">
+                            <div class="step-title">Picked Up</div>
+                            <div class="step-date">April 19, 2025</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">→</div>
+                        <div class="step-content">
+                            <div class="step-title">In Transit</div>
+                            <div class="step-date">April 20, 2025</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">○</div>
+                        <div class="step-content">
+                            <div class="step-title">Out for Delivery</div>
+                            <div class="step-date">Expected: April 23, 2025</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">○</div>
+                        <div class="step-content">
+                            <div class="step-title">Delivered</div>
+                            <div class="step-date">Expected: April 23, 2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="services">
+        <h2 class="section-title">Our Shipping Services</h2>
+        <div class="services">
+            <div class="service-card">
+                <div class="service-image">✈️</div>
+                <div class="service-content">
+                    <h3 class="service-title">Express Air Freight</h3>
+                    <p>Fast delivery via air for urgent shipments. Reach global destinations in 1-3 business days.</p>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">🚢</div>
+                <div class="service-content">
+                    <h3 class="service-title">Sea Freight</h3>
+                    <p>Cost-effective solution for large shipments. Perfect for international bulk cargo.</p>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">🚚</div>
+                <div class="service-content">
+                    <h3 class="service-title">Ground Shipping</h3>
+                    <p>Reliable land transportation for domestic deliveries with comprehensive tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" style="background-color: #f0f4f8;">
+        <h2 class="section-title">What Our Customers Say</h2>
+        <div class="testimonials">
+            <div class="testimonial">
+                <p class="testimonial-text">"Global Express delivered my package across the country in just two days. The tracking was accurate and customer service was excellent!"</p>
+                <p class="testimonial-author">- Sarah Johnson</p>
+            </div>
+            
+            <div class="testimonial">
+                <p class="testimonial-text">"As a small business owner, reliable shipping is crucial. Global Express has never let me down. Their rates are competitive and service is top-notch."</p>
+                <p class="testimonial-author">- Michael Chen</p>
+            </div>
+            
+            <div class="testimonial">
+                <p class="testimonial-text">"I needed to ship fragile equipment internationally and was worried about damage. Everything arrived perfectly intact thanks to their careful handling."</p>
+                <p class="testimonial-author">- Elena Rodriguez</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Global Express</h3>
+                <p>Providing reliable shipping solutions worldwide since 2010. We pride ourselves on speed, security, and customer satisfaction.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#tracking">Track Package</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>📱 +1 (555) 123-4567</li>
+                    <li>✉️ support@globalexpress.com</li>
+                    <li>🏢 123 Shipping Lane, Logistics City</li>
+                </ul>
+                
+                <div class="social-icons">
+                    <a href="#" class="social-icon">f</a>
+                    <a href="#" class="social-icon">t</a>
+                    <a href="#" class="social-icon">in</a>
+                    <a href="#" class="social-icon">ig</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 Global Express Shipping. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+        
+        // Tracking Form Handling
+        const trackingForm = document.getElementById('trackingForm');
+        const trackingResult = document.getElementById('trackingResult');
+        const trackingStatus = document.getElementById('trackingStatus');
+        
+        trackingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const trackingNumber = document.getElementById('trackingNumber').value;
+            
+            // Simulate API call with setTimeout
+            setTimeout(() => {
+                // Show tracking result
+                trackingResult.style.display = 'block';
+                
+                // Scroll to tracking result
+                trackingResult.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Example tracking statuses based on input length for demo purposes
+                if (trackingNumber.length < 5) {
+                    trackingStatus.textContent = 'Package not found. Please check your tracking number.';
+                    trackingStatus.style.color = 'var(--danger)';
+                } else if (trackingNumber.length < 10) {
+                    trackingStatus.textContent = 'Your package has been delivered on April 21, 2025.';
+                    trackingStatus.style.color = 'var(--secondary)';
+                    
+                    // Update steps
+                    const steps = document.querySelectorAll('.step-icon');
+                    steps.forEach(step => step.textContent = '✓');
+                } else {
+                    trackingStatus.textContent = 'Your package is in transit. Expected delivery: April 23, 2025.';
+                    trackingStatus.style.color = 'var(--primary)';
+                }
+            }, 1000);
+        });
+        
+        // Testimonial Slider
+        const testimonials = document.querySelector('.testimonials');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+        testimonials.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - testimonials.offsetLeft;
+            scrollLeft = testimonials.scrollLeft;
+        });
+        
+        testimonials.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+        
+        testimonials.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+        
+        testimonials.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - testimonials.offsetLeft;
+            const walk = (x - startX) * 2;
+            testimonials.scrollLeft = scrollLeft - walk;
+        });
+    </script>
+</body>
+</html>
